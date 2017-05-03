@@ -47,6 +47,8 @@ def buildIngredientsMapping(ingredients, blacklist, base_ingredients=None):
     new_ing = []
     # Iterate over each ingredient
     for ing in ingredients:
+        if ing == 'granulated sugar':
+            print ing
         old_ing = ing.strip()
 
         # Clean ingredient name with all blacklist terms
@@ -81,7 +83,7 @@ def buildIngredientsMapping(ingredients, blacklist, base_ingredients=None):
 
 if __name__ == "__main__":
     #ing2idx, idx2ing = readIngredientsDictionary('ingredients_Recipes5k.txt')
-    ingredients = readIngredientsDictionary('../annotations/ingredients_Recipes5k.txt')
+    ingredients = readIngredientsDictionary('../../../datasets/recipes5k/annotations/ingredients_Recipes5k.txt')
     print 'Unique ingredients:',len(ingredients)
     blacklist = readBlacklist('blacklist.txt')
     print 'Blacklist terms:',len(blacklist)
@@ -90,5 +92,9 @@ if __name__ == "__main__":
     clean_ingredients_list, raw2clean_mapping = buildIngredientsMapping(ingredients, blacklist,
                                                                         base_ingredients=base_ingredients)
     print 'Clean ingredients:',len(clean_ingredients_list)
+
+    file = open('simplifiedIngredients.txt','w')
+    for el in clean_ingredients_list: file.write(el + ',')
+    file.close()
 
     #print clean_ingredients_list

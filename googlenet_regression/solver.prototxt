@@ -1,0 +1,16 @@
+train_net: "prototxt/train_frozen_200_reduced.prototxt"
+test_net: "prototxt/val_frozen_200_reduced.prototxt"
+test_iter: 10
+test_interval: 100000
+base_lr: 0.001
+display: 1000000
+max_iter: 10000000
+lr_policy: "poly"
+power: 0.5
+momentum: 0.9
+weight_decay: 0.0002
+snapshot: 100
+snapshot_prefix: "../../../datasets/recipes5k/models/CNNRegression/ingredients_Inception_frozen_200"
+solver_mode: GPU
+iter_size: 1
+type: "SGD"

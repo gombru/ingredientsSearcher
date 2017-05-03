@@ -5,40 +5,17 @@ from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 from gensim import corpora, models
 import string
-
-def readBlacklist(file):
-
-    blacklist = []
-    with open(file, 'r') as file:
-        for line in file:
-            line = line.rstrip('\n').strip().lower()
-            blacklist.append(line)
-
-    return blacklist
-
-def readBaseIngredients(file):
-
-    base_ingredients = []
-    with open(file, 'r') as file:
-        for line in file:
-            line = line.rstrip('\n').split(',')
-            for ing in line:
-                ing = ing.strip().lower()
-                base_ingredients.append(ing)
-
-    return base_ingredients
+import numpy as np
+import sys
+sys.path.insert(0, '../ingredients_simplification')
+import clean_ingredients
 
 
 whitelist = string.letters + string.digits + ' ' + ','
-
 text_data_path = '../../../datasets/recipes5k/aux_annotations/lda_train_ingredients.txt'
-
-model_path = '../../../datasets/recipes5k/models/lda/lda_model_100.model'
-
-blacklist = readBlacklist('../ingredients_simplification/blacklist.txt')
-
-words2use = readBaseIngredients('../ingredients_simplification/baseIngredients.txt')
-
+model_path = '../../../datasets/recipes5k/models/LDA/lda_model_200.model'
+blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
+words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
 
 num_topics = 200
 threads = 8
@@ -61,18 +38,11 @@ texts = [] #List of lists of tokens
 file = open(text_data_path, "r")
 for line in file:
     filtered_text = ""
-    # Replace commas with spaces (in this dataset commas separate words instead of spaces
-    # line = line.replace('#', ' ')
     # Keep only letters and numbers
     for char in line:
         if char in whitelist:
             filtered_text += char
-    # print line
-    # print filtered_text
     posts_text.append(filtered_text.decode('utf-8').lower())
-    # print filtered_caption.decode('utf-8')
-
-
 
 
 print "Number of posts: " + str(len(posts_text))
@@ -85,8 +55,6 @@ for t in posts_text:
     c += 1
     if c % 10000 == 0:
         print c
-
-    #
 
     try:
         t = t.lower()
@@ -103,7 +71,15 @@ for t in posts_text:
                     ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
             tok = ' '.join(ing_parts).strip()
 
-            if tok not in words2use:
+            # Simplify ingredients if contained in base_ingredients list
+            found = False
+            i = 0
+            while not found and i < len(words2use):
+                if words2use[i] in tok:
+                    tok = words2use[i]
+                    found = True
+
+            if not found:
                 print "Ignoring ingredient: " + tok
                 tokens.remove(tok)
             else:
@@ -130,7 +106,8 @@ dictionary = corpora.Dictionary(texts)
 # Convert dictionary to a BoW
 # The result is a list of vectors equal to the number of documents. Each document containts tumples (term ID, term frequency)
 corpus = [dictionary.doc2bow(text) for text in texts]
-
+#Randomize training elements
+corpus = np.random.permutation(corpus)
 texts = []
 
 # Generate an LDA model
