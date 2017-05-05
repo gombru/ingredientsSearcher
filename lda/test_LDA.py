@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0, '../ingredients_simplification')
 import clean_ingredients
 
-split = 'train'
+split = 'val'
 
 # Load data and model
 ingredients_path = '../../../datasets/recipes5k/annotations/ingredients_Recipes5k.txt'
@@ -74,25 +74,29 @@ for c in range(0,len(indices)-1):
     #Process ingredients text
     t = cur_ingredients.lower()
     tokens = t.split(',')
-    for tok in tokens:
+
+    for tok in range(0, len(tokens)):
         # Remove words form blacklist
-        ing_parts = tok.split(' ')
+        ing_parts = tokens[tok].split(' ')
         for b in blacklist:
             if b in ing_parts:
                 pos_b = ing_parts.index(b)
                 ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
-        tok = ' '.join(ing_parts).strip()
+        tokens[tok] = ' '.join(ing_parts).strip()
 
         # Simplify ingredients if contained in base_ingredients list
         found = False
         i = 0
         while not found and i < len(words2use):
-            if words2use[i] in tok:
-                tok = words2use[i]
+            if words2use[i] in tokens[tok]:
+                tokens[tok] = words2use[i]
                 found = True
+            i += 1
+
         if not found:
-            print "Ignoring ingredient: " + tok
-            tokens.remove(tok)
+            print "Igredient not found: "
+            print tokens[tok]
+            # tokens.remove(tokens[tok])
 
     # Handle stemmer error
     while "aed" in tokens:

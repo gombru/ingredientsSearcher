@@ -61,29 +61,28 @@ for t in posts_text:
         # tokens = tokenizer.tokenize(t)
         tokens = t.split(',')
 
-        for tok in tokens:
+        for tok in range(0,len(tokens)):
 
             # Remove words form blacklist
-            ing_parts = tok.split(' ')
+            ing_parts = tokens[tok].split(' ')
             for b in blacklist:
                 if b in ing_parts:
                     pos_b = ing_parts.index(b)
                     ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
-            tok = ' '.join(ing_parts).strip()
+            tokens[tok] = ' '.join(ing_parts).strip()
 
             # Simplify ingredients if contained in base_ingredients list
             found = False
             i = 0
             while not found and i < len(words2use):
-                if words2use[i] in tok:
-                    tok = words2use[i]
+                if words2use[i] in tokens[tok]:
+                    tokens[tok] = words2use[i]
                     found = True
+                i += 1
 
             if not found:
                 print "Ignoring ingredient: " + tok
-                tokens.remove(tok)
-            else:
-                print "CORRECT"
+                tokens.remove(tokens[tok])
 
         # remove stop words from tokens
         # stopped_tokens = [i for i in tokens if not i in en_stop]
