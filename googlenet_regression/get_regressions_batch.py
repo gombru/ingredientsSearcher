@@ -11,14 +11,14 @@ caffe.set_mode_gpu()
 test = np.loadtxt('../../../datasets/recipes5k/annotations/test_images.txt', dtype=str)
 
 #Output file
-output_file_dir = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_200_iter_2400'
+output_file_dir = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_500from200_iter_2000'
 if not os.path.exists(output_file_dir):
     os.makedirs(output_file_dir)
 output_file_path = output_file_dir + '/test.txt'
 output_file = open(output_file_path, "w")
 
 # load net
-net = caffe.Net('../googlenet_regression/prototxt/deploy200.prototxt', '../../../datasets/recipes5k/models/CNNRegression/ingredients_Inception_frozen_200_iter_2400.caffemodel', caffe.TEST)
+net = caffe.Net('../googlenet_regression/prototxt/deploy500.prototxt', '../../../datasets/recipes5k/models/saved/ingredients_Inception_frozen_500from200_iter_2000.caffemodel', caffe.TEST)
 
 
 size = 227

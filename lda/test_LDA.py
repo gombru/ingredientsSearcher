@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0, '../ingredients_simplification')
 import clean_ingredients
 
-split = 'val'
+split = 'test'
 
 # Load data and model
 ingredients_path = '../../../datasets/recipes5k/annotations/ingredients_Recipes5k.txt'
@@ -36,7 +36,7 @@ words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification
 
 ldamodel = models.ldamodel.LdaModel.load(model_path)
 
-topics = ldamodel.print_topics(num_topics=num_topics, num_words=20)
+topics = ldamodel.print_topics(num_topics=num_topics, num_words=5)
 print topics
 
 # Save a txt with the topics and the weights

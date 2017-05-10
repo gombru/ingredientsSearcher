@@ -1,16 +1,17 @@
 from load_regressions_from_txt import load_regressions_from_txt
 from gensim import corpora, models
+from get_PR import get_PR
 
 
-database_path = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_200_iter_2400/test.txt'
-LDA_model_path = '../../../datasets/recipes5k/models/LDA/lda_model_200.model'
-num_topics = 200
+database_path = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_500from200_iter_2000/test.txt'
+LDA_model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500.model'
+num_topics = 500
 max_ing_per_topic = 5
 max_ing_per_recipe = 20
-topic_threshold = 0 #float(4)/num_topics
+topic_threshold = 0.02
 ing_threshold = 0.0015
 
-output_file_path = '../../../datasets/recipes5k/results/regression2results_200_topth_' + str(topic_threshold) + 'ingth_' + str(ing_threshold) + '.txt'
+output_file_path = '../../../datasets/recipes5k/results/regression2results_500_scratch_topth_' + str(topic_threshold) + 'ingth_' + str(ing_threshold) + '.txt'
 
 
 # Get topics and associated ingredients
@@ -37,6 +38,11 @@ for id in database: #For each image
                     if ing[0] not in aux_list:
                         aux_list.append(ing[0])
                         img_ing.append([ing[0], ing_score])
+                    else:
+                        index = aux_list.index(ing[0])
+                        #score = max(img_ing[1][1], ing_score)
+                        score = img_ing[1][1] + ing_score
+                        img_ing[index] = [ing[0], score]
 
     # Sort list by ingredient confidence
     img_ing = sorted(img_ing, key=lambda x: -x[1])
@@ -51,4 +57,8 @@ for id in database: #For each image
 
 out_file.close()
 print 'DONE'
+print output_file_path
+
+print "Computing P-R:"
+get_PR(output_file_path)
 

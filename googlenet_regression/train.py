@@ -12,7 +12,8 @@ import os
 caffe.set_device(0)
 caffe.set_mode_gpu()
 
-weights = '../../../datasets/SocialMedia/models/pretrained/bvlc_googlenet.caffemodel'
+#weights = '../../../datasets/SocialMedia/models/pretrained/bvlc_googlenet.caffemodel'
+weights = '../../../datasets/recipes5k/models/saved/ingredients_Inception_frozen_500_iter_2700.caffemodel'
 assert os.path.exists(weights)
 
 niter = 10001111
@@ -24,7 +25,7 @@ test_interval = 200
 test_iters = 10
 
 #Set solver configuration
-solver_filename = create_solver('prototxt/train_frozen_200_reduced.prototxt', 'prototxt/val_frozen_200_reduced.prototxt', base_lr=base_lr)
+solver_filename = create_solver('prototxt/train_frozen_500_reduced.prototxt', 'prototxt/val_frozen_500_reduced.prototxt', base_lr=base_lr)
 #Load solver
 solver = caffe.get_solver(solver_filename)
 

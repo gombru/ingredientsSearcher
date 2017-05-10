@@ -13,12 +13,12 @@ import clean_ingredients
 
 whitelist = string.letters + string.digits + ' ' + ','
 text_data_path = '../../../datasets/recipes5k/aux_annotations/lda_train_ingredients.txt'
-model_path = '../../../datasets/recipes5k/models/LDA/lda_model_200.model'
+model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500.model'
 blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
 words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
 
-num_topics = 200
-threads = 8
+num_topics = 500
+threads = 5
 passes = 20
 
 #Initialize Tokenizer
