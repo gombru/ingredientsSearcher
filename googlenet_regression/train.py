@@ -13,7 +13,7 @@ caffe.set_device(0)
 caffe.set_mode_gpu()
 
 #weights = '../../../datasets/SocialMedia/models/pretrained/bvlc_googlenet.caffemodel'
-weights = '../../../datasets/recipes5k/models/saved/ingredients_Inception_frozen_500_iter_2700.caffemodel'
+weights = '../../../datasets/recipes5k/models/saved/ingredients_Inception_frozen_200_raw_iter_1700.caffemodel'
 assert os.path.exists(weights)
 
 niter = 10001111

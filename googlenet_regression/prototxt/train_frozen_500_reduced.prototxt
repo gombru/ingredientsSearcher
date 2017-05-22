@@ -6,7 +6,7 @@ layer {
   python_param {
     module: "layers"
     layer: "customDataLayer"
-    param_str: "{\'rotate\': 0, \'resize_h\': 300, \'HSV_jitter\': 0, \'crop_h\': 224, \'batch_size\': 100, \'HSV_prob\': 0, \'crop_w\': 224, \'train\': True, \'split\': \'train500\', \'mirror\': True, \'num_classes\': 500, \'resize_w\': 300, \'crop_margin\': 10, \'dir\': \'../../../datasets/recipes5k\', \'mean\': (104.00699, 116.66877, 122.67892)}"
+    param_str: "{\'rotate\': 0, \'resize_h\': 300, \'HSV_jitter\': 0, \'crop_h\': 224, \'batch_size\': 100, \'HSV_prob\': 0, \'crop_w\': 224, \'train\': True, \'split\': \'train500_raw\', \'mirror\': True, \'num_classes\': 500, \'resize_w\': 300, \'crop_margin\': 10, \'dir\': \'../../../datasets/recipes5k\', \'mean\': (104.00699, 116.66877, 122.67892)}"
   }
 }
 layer {
@@ -2075,10 +2075,10 @@ layer {
   }
 }
 layer {
-  name: "loss3/classifierCustom"
+  name: "loss3/classifierCustomC"
   type: "InnerProduct"
   bottom: "pool5/7x7_s1"
-  top: "loss3/classifierCustom"
+  top: "loss3/classifierCustomC"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -2101,7 +2101,7 @@ layer {
 layer {
   name: "loss3/loss3"
   type: "SigmoidCrossEntropyLoss"
-  bottom: "loss3/classifierCustom"
+  bottom: "loss3/classifierCustomC"
   bottom: "label"
   top: "loss3/loss3"
   loss_weight: 1

@@ -3,15 +3,15 @@ from gensim import corpora, models
 from get_PR import get_PR
 
 
-database_path = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_500from200_iter_2000/test.txt'
-LDA_model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500.model'
+database_path = '../../../datasets/recipes5k/regression_output/ingredients_Inception_frozen_500_raw_iter_1400/test.txt'
+LDA_model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500_raw.model'
 num_topics = 500
 max_ing_per_topic = 5
 max_ing_per_recipe = 20
-topic_threshold = 0.02
+topic_threshold = 0.005
 ing_threshold = 0.0015
 
-output_file_path = '../../../datasets/recipes5k/results/regression2results_500_scratch_topth_' + str(topic_threshold) + 'ingth_' + str(ing_threshold) + '.txt'
+output_file_path = '../../../datasets/recipes5k/results/regression2results_500_raw_topth_' + str(topic_threshold) + 'ingth_' + str(ing_threshold) + '.txt'
 
 
 # Get topics and associated ingredients
@@ -35,14 +35,17 @@ for id in database: #For each image
             for ing in ldamodel.show_topic(t,max_ing_per_topic): #For each ningredient associated to the topic
                 ing_score = topic_value * ing[1] #Topic prob * ing prob = ingredient confidence
                 if ing_score > ing_threshold:
-                    if ing[0] not in aux_list:
-                        aux_list.append(ing[0])
-                        img_ing.append([ing[0], ing_score])
-                    else:
-                        index = aux_list.index(ing[0])
-                        #score = max(img_ing[1][1], ing_score)
-                        score = img_ing[1][1] + ing_score
-                        img_ing[index] = [ing[0], score]
+                    try:
+                        if ing[0] not in aux_list:
+                            aux_list.append(ing[0])
+                            img_ing.append([ing[0], ing_score])
+                        else:
+                            index = aux_list.index(ing[0])
+                            score = max(img_ing[1][1], ing_score)
+                            #score = img_ing[1][1] + ing_score
+                            img_ing[index] = [ing[0], score]
+                    except:
+                        "Failed saving ingredient"
 
     # Sort list by ingredient confidence
     img_ing = sorted(img_ing, key=lambda x: -x[1])

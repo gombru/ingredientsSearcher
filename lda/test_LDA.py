@@ -15,24 +15,24 @@ import sys
 sys.path.insert(0, '../ingredients_simplification')
 import clean_ingredients
 
-split = 'test'
+split = 'train'
 
 # Load data and model
 ingredients_path = '../../../datasets/recipes5k/annotations/ingredients_Recipes5k.txt'
 images_path = '../../../datasets/recipes5k/annotations/'+split+'_images.txt'
 indices_path = '../../../datasets/recipes5k/annotations/'+split+'_labels.txt'
-model_path = '../../../datasets/recipes5k/models/LDA/lda_model_200.model'
+model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500_raw.model'
 
 # Create output files
-gt_path = '../../../datasets/recipes5k/lda_gt/'+split+'200.txt'
+gt_path = '../../../datasets/recipes5k/lda_gt/'+split+'500_raw.txt'
 
 gt_file = open(gt_path, "w")
 
-num_topics = 200
+num_topics = 500
 
 whitelist = string.letters + string.digits + ' ' + ','
-blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
-words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
+# blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
+# words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
 
 ldamodel = models.ldamodel.LdaModel.load(model_path)
 
@@ -75,28 +75,28 @@ for c in range(0,len(indices)-1):
     t = cur_ingredients.lower()
     tokens = t.split(',')
 
-    for tok in range(0, len(tokens)):
-        # Remove words form blacklist
-        ing_parts = tokens[tok].split(' ')
-        for b in blacklist:
-            if b in ing_parts:
-                pos_b = ing_parts.index(b)
-                ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
-        tokens[tok] = ' '.join(ing_parts).strip()
-
-        # Simplify ingredients if contained in base_ingredients list
-        found = False
-        i = 0
-        while not found and i < len(words2use):
-            if words2use[i] in tokens[tok]:
-                tokens[tok] = words2use[i]
-                found = True
-            i += 1
-
-        if not found:
-            print "Igredient not found: "
-            print tokens[tok]
-            # tokens.remove(tokens[tok])
+    # for tok in range(0, len(tokens)):
+    #     # Remove words form blacklist
+    #     ing_parts = tokens[tok].split(' ')
+    #     for b in blacklist:
+    #         if b in ing_parts:
+    #             pos_b = ing_parts.index(b)
+    #             ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
+    #     tokens[tok] = ' '.join(ing_parts).strip()
+    #
+    #     # Simplify ingredients if contained in base_ingredients list
+    #     found = False
+    #     i = 0
+    #     while not found and i < len(words2use):
+    #         if words2use[i] in tokens[tok]:
+    #             tokens[tok] = words2use[i]
+    #             found = True
+    #         i += 1
+    #
+    #     if not found:
+    #         print "Igredient not found: "
+    #         print tokens[tok]
+    #         # tokens.remove(tokens[tok])
 
     # Handle stemmer error
     while "aed" in tokens:

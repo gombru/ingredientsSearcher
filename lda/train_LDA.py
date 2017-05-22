@@ -12,13 +12,13 @@ import clean_ingredients
 
 
 whitelist = string.letters + string.digits + ' ' + ','
-text_data_path = '../../../datasets/recipes5k/aux_annotations/lda_train_ingredients.txt'
-model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500.model'
-blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
-words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
+text_data_path = '../../../datasets/recipes5k/aux_annotations/lda_train_ingredients_raw.txt'
+model_path = '../../../datasets/recipes5k/models/LDA/lda_model_500_raw.model'
+# blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
+# words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
 
 num_topics = 500
-threads = 5
+threads = 6
 passes = 20
 
 #Initialize Tokenizer
@@ -61,28 +61,28 @@ for t in posts_text:
         # tokens = tokenizer.tokenize(t)
         tokens = t.split(',')
 
-        for tok in range(0,len(tokens)):
-
-            # Remove words form blacklist
-            ing_parts = tokens[tok].split(' ')
-            for b in blacklist:
-                if b in ing_parts:
-                    pos_b = ing_parts.index(b)
-                    ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
-            tokens[tok] = ' '.join(ing_parts).strip()
-
-            # Simplify ingredients if contained in base_ingredients list
-            found = False
-            i = 0
-            while not found and i < len(words2use):
-                if words2use[i] in tokens[tok]:
-                    tokens[tok] = words2use[i]
-                    found = True
-                i += 1
-
-            if not found:
-                print "Ignoring ingredient: " + tok
-                tokens.remove(tokens[tok])
+        # for tok in range(0,len(tokens)):
+        #
+        #     # Remove words form blacklist
+        #     ing_parts = tokens[tok].split(' ')
+        #     for b in blacklist:
+        #         if b in ing_parts:
+        #             pos_b = ing_parts.index(b)
+        #             ing_parts = ing_parts[:pos_b] + ing_parts[pos_b + 1:]
+        #     tokens[tok] = ' '.join(ing_parts).strip()
+        #
+        #     # Simplify ingredients if contained in base_ingredients list
+        #     found = False
+        #     i = 0
+        #     while not found and i < len(words2use):
+        #         if words2use[i] in tokens[tok]:
+        #             tokens[tok] = words2use[i]
+        #             found = True
+        #         i += 1
+        #
+        #     if not found:
+        #         print "Ignoring ingredient: " + tok
+        #         tokens.remove(tokens[tok])
 
         # remove stop words from tokens
         # stopped_tokens = [i for i in tokens if not i in en_stop]

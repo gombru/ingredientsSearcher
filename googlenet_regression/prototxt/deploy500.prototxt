@@ -2126,10 +2126,10 @@ layer {
   }
 }
 layer {
-  name: "loss3/classifierCustom"
+  name: "loss3/classifierCustomC"
   type: "InnerProduct"
   bottom: "pool5/7x7_s1"
-  top: "loss3/classifierCustom"
+  top: "loss3/classifierCustomC"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -2152,6 +2152,6 @@ layer {
 layer {
   name: "probs"
   type: "Sigmoid"
-  bottom: "loss3/classifierCustom"
+  bottom: "loss3/classifierCustomC"
   top: "probs"
 }

@@ -15,8 +15,8 @@ def get_PR(results_path):
     images_path = '../../../datasets/recipes5k/annotations/'+split+'_images.txt'
     indices_path = '../../../datasets/recipes5k/annotations/'+split+'_labels.txt'
 
-    blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
-    words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
+    # blacklist = clean_ingredients.readBlacklist('../ingredients_simplification/blacklist.txt')
+    # words2use = clean_ingredients.readBaseIngredients('../ingredients_simplification/simplifiedIngredients.txt')
 
     indices_file = open(indices_path, 'r')
     ingredients_file = open(ingredients_path, 'r')
@@ -55,7 +55,7 @@ def get_PR(results_path):
 
             # Find GT ingredients
             gt_ing = ingredients[index].split(',')
-            gt_ing = simplify_ing_list(gt_ing,blacklist,words2use)
+            # gt_ing = simplify_ing_list(gt_ing,blacklist,words2use)
 
 
             for t in range(1,len(d) - 1):
@@ -89,4 +89,4 @@ def get_PR(results_path):
 
     print 'DONE'
 
-get_PR(results_path)
+# get_PR(results_path)

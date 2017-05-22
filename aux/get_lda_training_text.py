@@ -1,7 +1,7 @@
-recipes_filename = '../../../datasets/recipes/Recipes5k/annotations/ingredients_Recipes5k.txt'
-indices_filename = '../../../datasets/recipes/Recipes5k/annotations/train_labels.txt'
+recipes_filename = '../../../datasets/recipes5k/annotations/ingredients_Recipes5k.txt'
+indices_filename = '../../../datasets/recipes5k/annotations/train_labels.txt'
 
-out_filename = '../../../datasets/recipes/Recipes5k/aux_annotations/lda_train_ingredients.txt'
+out_filename = '../../../datasets/recipes5k/aux_annotations/lda_train_ingredients_raw.txt'
 
 recipes =[]
 out_recipes=[]
